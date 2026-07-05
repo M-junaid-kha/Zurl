@@ -154,7 +154,7 @@ export default function Home() {
                 onChange={(e) => setLongUrl(e.target.value)}
                 className="w-full rounded-xl border border-[#E1E1DC] bg-[#FBFBFA] px-4 py-3 text-[#10131A] text-base placeholder:text-[#A6ABB3] focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] transition"
                 style={{ fontFamily: "var(--font-mono)" }}
-                type="text"
+                type="url"
                 placeholder="https://example.com/your-long-link"
               />
             </div>

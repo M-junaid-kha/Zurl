@@ -24,6 +24,28 @@ const Page = () => {
     fetchLinks();
   }, []);
 
+  const handleDelete = async (id) => {
+    const ok = window.confirm("Delete this URL?");
+
+    if (!ok) return;
+
+    const response = await fetch("/api/generate", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setLinks((prev) => prev.filter((link) => link._id !== id));
+    } else {
+      alert(data.message);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#F7F7F5] px-4 sm:px-6 py-10 sm:py-14">
       <div className="max-w-6xl mx-auto">
@@ -44,8 +66,7 @@ const Page = () => {
             Manage all your shortened URLs from one place.
           </p>
         </div>
-
-        {/* Stats */}
+          {/* Stats */}
         <div className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <div className="bg-white rounded-2xl border border-[#E7E7E3] shadow-[0_1px_2px_rgba(16,19,26,0.04),0_12px_32px_-16px_rgba(16,19,26,0.15)] p-6">
             <div className="flex items-center gap-3">
@@ -58,8 +79,7 @@ const Page = () => {
             </div>
             <p
               className={
-                display.className +
-                " text-4xl font-bold text-[#10131A] mt-4"
+                display.className + " text-4xl font-bold text-[#10131A] mt-4"
               }
             >
               {links.length}
@@ -96,7 +116,7 @@ const Page = () => {
                         Original URL
                       </p>
                       <a
-                        href={link.longUrl}
+                       href={link.longUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-[#5B6168] hover:text-[#16233F] break-all hover:underline underline-offset-2 transition-colors"
@@ -139,8 +159,16 @@ const Page = () => {
                       Created: {new Date(link.date).toLocaleDateString()}
                     </p>
                   </div>
+                  <div>
+  <p className="text-xs font-medium uppercase tracking-wide text-[#8A8F98] mb-1">
+    visites
+  </p>
 
-                  {/* Right */}
+  <span className="text-lg font-bold text-[#16233F]">
+    {link.clicks || 0}
+  </span>
+</div>
+  {/* Right */}
                   <div className="flex flex-row lg:flex-col gap-2.5 shrink-0">
                     <button
                       onClick={() =>
@@ -159,6 +187,13 @@ const Page = () => {
                     >
                       Visit <FaExternalLinkAlt size={10} />
                     </a>
+
+                    <button
+                      onClick={() => handleDelete(link._id)}
+                      className="flex-1 lg:flex-none flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -185,3 +220,4 @@ const Page = () => {
 };
 
 export default Page;
+ 

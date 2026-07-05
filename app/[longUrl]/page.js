@@ -16,5 +16,15 @@ export default async function Page({ params }) {
     notFound();
   }
 
+  // Increase click count by 1
+  await urls.updateOne(
+    { customAlias: longUrl },
+    {
+      $inc: {
+        clicks: 1,
+      },
+    }
+  );
+
   redirect(existing.longUrl);
 }
